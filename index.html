@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OutLaw Real Estate — Managers JUDY and JEHAD</title>
+  
+  
+  
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+
+    :root{
+      --bg:#0f1113;
+      --card:#161819;
+      --accent:#3dc1ce;
+      --muted:#9aa0a6;
+      --radius:12px;
+    }
+
+
+    body{
+  margin:0;
+  font-family:'Cairo', sans-serif;
+  background:var(--bg);
+  color:#fff;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+
+
+    header{text-align:center;margin-bottom:18px}
+    h1{margin:0;font-size:28px;letter-spacing:1px}
+    .sub{color:var(--muted);margin-top:6px}
+
+    .btn{
+      background:var(--accent);
+      color:#012;
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600
+    }
+    .center{display:flex;gap:12px;justify-content:center;align-items:center}
+	
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:18px;margin-top:22px
+    }
+
+
+    .card{
+      position:relative;
+      background:linear-gradient(180deg,var(--card), #0f1113);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:0 6px 20px rgba(0,0,0,0.6);
+      cursor:pointer;
+      transition:transform .18s, box-shadow .18s
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,0.7)}
+    .thumb{width:100%;height:150px;object-fit:cover;display:block;background:#222}
+    .info{padding:12px}
+    .title{font-weight:700;font-size:16px}
+    .price{color:var(--accent);font-weight:700;margin-top:6px}
+    .meta{color:var(--muted);font-size:13px;margin-top:8px}
+ 
+    .badge{
+      position:absolute;
+      top:10px;left:10px;
+      font-size:12px;
+      font-weight:bold;
+      padding:4px 8px;
+      border-radius:8px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.4);
+    }
+    .badge.sale { background:#2196F3; color:#fff; }   /* أزرق */
+    .badge.new  { background:#4CAF50; color:#fff; }   /* أخضر */
+    .badge.hot  { background:#E53935; color:#fff; }   /* أحمر */
+	.badge.soon { background:#FFC107; color:#000; }  /* أصفر ذهبي */
+ 
+    .modal-bg{
+      position:fixed;inset:0;
+      display:none;
+      align-items:center;justify-content:center;
+      background:rgba(255,255,255,0.05);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      z-index:60;
+    }
+    .modal{
+      width:92%;max-width:900px;
+      background:rgba(25,25,25,0.5);
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,0.7);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+    .modal-body{display:grid;grid-template-columns:1fr 360px;gap:14px;padding:14px}
+    .main-img{width:100%;height:420px;object-fit:cover;border-radius:8px;background:#111}
+    .side h3{margin:6px 0 4px}
+    .side .field{color:var(--muted);margin:8px 0}
+
+    .slide-btn{
+      position:absolute;top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.5);
+      color:#fff;border:none;
+      padding:10px 14px;border-radius:50%;
+      cursor:pointer;font-size:18px
+    }
+    .slide-btn:hover{background:rgba(0,0,0,0.8)}
+
+    .counter{
+      position:absolute;bottom:10px;right:10px;
+      background:rgba(0,0,0,0.6);
+      color:#fff;padding:4px 8px;border-radius:8px;font-size:13px
+    }
+
+    .modal-footer{display:flex;justify-content:space-between;gap:8px;padding:12px;border-top:1px solid rgba(255,255,255,0.1)}
+    .back{background:transparent;border:1px solid rgba(255,255,255,0.2);padding:8px 12px;border-radius:8px;color:var(--muted);cursor:pointer}
+    @media (max-width:880px){
+      .modal-body{grid-template-columns:1fr}
+      .main-img{height:300px}
+    }
+
+.pager{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-top:20px;
+  align-items:center;
+}
+
+.pager button{
+  background:#1a1a1a;              
+  border:1px solid rgba(255,255,255,0.1);
+  color:#ddd;
+  padding:8px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.pager button:hover{
+  background:#2a2a2a;              
+  color:#fff;
+}
+.pager button.active{
+  background:var(--accent);        
+  color:#012;
+  border-color:var(--accent);
+  font-weight:bold;
+}
+
+#modalDesc {
+  white-space: pre-line;
+}
+
+#modalDesc {
+  white-space: pre-line;
+}
+
+#modalSpecs ul {
+  margin: 0;
+  padding-left: 18px;
+}
+#modalSpecs li {
+  margin: 4px 0;
+}
+
+.lang-btn {
+  position: fixed;
+  bottom: 50px;
+  right: 55px;
+  background: var(--accent);
+  color: #012;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
+}
+.lang-btn:hover {
+  background: #2aa5b8;
+  color: #fff;
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+<header>
+  <img src="https://media.discordapp.net/attachments/1299782233866899586/1421038622035017738/logo.png?ex=68d794d9&is=68d64359&hm=525625bb97bd82552f2922f603a66eee59f2f7b19050dffa3b6da0a71a47a22e&=&format=webp&quality=lossless&width=400&height=400" alt="Logo" class="logo">
+  <h1>OutLaw Real Estate</h1>
+  <div class="sub">- Managers JUDY and JEHAD -</div>
+  <div style="margin-top:12px" class="center">
+    <button class="btn" id="openListBtn">مشاهدة العقارات المتاحة</button>
+  </div>
+</header>
+
+    <section id="listSection" style="display:none">
+      <h2 style="margin:0 0 6px">🏡 Property Listings</h2>
+      <div class="pager" id="pager">
+<button onclick="filterCategory('warehouse', this)">Warehouses</button>
+<button onclick="filterCategory('apartment', this)">Medium Apartments</button>
+<button onclick="filterCategory('house', this)">Big Houses</button>
+      </div>
+      <div id="grid" class="grid"></div>
+    </section>
+  </div>
+
+  <div id="modalBg" class="modal-bg">
+    <div class="modal">
+      <div class="modal-body">
+        <div style="position:relative">
+          <img id="modalMainImg" class="main-img" src="">
+          <button id="prevBtn" class="slide-btn" style="left:10px">⬅</button>
+          <button id="nextBtn" class="slide-btn" style="right:10px">➡</button>
+          <div id="counter" class="counter"></div>
+        </div>
+        <aside class="side">
+          <h3 id="modalTitle">Title</h3>
+          <div id="modalPrice" style="font-weight:800;color:var(--accent)"></div>
+          <div class="field" id="modalLocation"></div>
+          <div class="field" id="modalSpecs"></div>
+          <div class="field" id="modalDesc"></div>
+        </aside>
+      </div>
+      <div class="modal-footer">
+        <button class="back" id="closeModalBtn">⬅ Back</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+const properties = [
+    { 
+    id:3, 
+    title:"Large House", 
+    price:"$0", 
+    size:"-",
+    stash:"-",
+    canAddGarage:"-",
+    secretRoom:"no",
+    category:"house",
+    badge:"Soon",
+    badgeClass:"soon",
+    images:[
+      "https://media.discordapp.net/attachments/1299782233866899586/1421022418582896650/Untitled-1.png?ex=68d785c1&is=68d63441&hm=fcf935fe507d89a07113a543418b489568a577e9f41b1bd6142132579ab6a4e9&=&format=webp&quality=lossless&width=400&height=400",
+    ],
+    desc:"Soon."
+  },
+
+  { 
+    id:2, 
+    title:"Modern Apartment", 
+    price:"$450,000", 
+    size:"متوسط",
+    stash:"3000kg",
+    canAddGarage:"yes",
+    secretRoom:"yes",
+    category:"apartment",
+    badge:"new", 
+    badgeClass:"new",
+    images:[
+      "https://media.discordapp.net/attachments/1299782233866899586/1420991557418356786/image.png?ex=68d76904&is=68d61784&hm=9031bcc18b894c202581188ededa2c01f4bbb50d506c48ca2667e9e4371d20e5&=&format=webp&quality=lossless&width=1120&height=630",
+      "https://media.discordapp.net/attachments/1299782233866899586/1420991608102588538/image.png?ex=68d76910&is=68d61790&hm=02cb7c15a12672b14d9602d69388943e290a7891f9a2841663eb2fbffbe534dd&=&format=webp&quality=lossless&width=1120&height=630",
+	  "https://media.discordapp.net/attachments/1299782233866899586/1420991658497146990/image.png?ex=68d7691c&is=68d6179c&hm=4996a52c651025babd2934f2d5456661730ef7b8dabb39fa4d751c6ead3167d6&=&format=webp&quality=lossless&width=1120&height=630",
+	  "https://media.discordapp.net/attachments/1299782233866899586/1420991708849770628/image.png?ex=68d76928&is=68d617a8&hm=a5bb452c0f15ef3147fb42ccc80dac19afa2850707989b773fb30d273e2458a5&=&format=webp&quality=lossless&width=440&height=247",
+	  "https://media.discordapp.net/attachments/1299782233866899586/1420991785148219452/image.png?ex=68d7693a&is=68d617ba&hm=7209f983cbaa9a0ba173041f7cf7c94ce73033a96b4f475a44d7c27777521a4d&=&format=webp&quality=lossless&width=1120&height=630",
+	  "https://media.discordapp.net/attachments/1299782233866899586/1420991891029360660/image.png?ex=68d76953&is=68d617d3&hm=6debd24530482aab00f37da7e0611ca87caa8064e659932ba3fe5a8f2b55078a&=&format=webp&quality=lossless&width=440&height=247",
+    ],
+    desc:"."
+  },
+
+  { 
+    id:3, 
+    title:"Cozy Apartment", 
+    price:"$0", 
+    size:"-",
+    stash:"-",
+    canAddGarage:"-",
+    secretRoom:"no",
+    category:"apartment",
+    badge:"Soon",
+    badgeClass:"soon",
+    images:[
+      "https://media.discordapp.net/attachments/1299782233866899586/1421022418582896650/Untitled-1.png?ex=68d785c1&is=68d63441&hm=fcf935fe507d89a07113a543418b489568a577e9f41b1bd6142132579ab6a4e9&=&format=webp&quality=lossless&width=400&height=400",
+    ],
+    desc:"Soon."
+  },
+  
+  { 
+    id:4, 
+    title:"Small Warehouse", 
+    price:"$200,000",
+    size:"صغير",
+    stash:"1000kg",
+    canAddGarage:"no",
+    secretRoom:"no",
+    category:"warehouse",
+    badge:"new", 
+    badgeClass:"new",
+    images:[
+    "https://media.discordapp.net/attachments/1299782233866899586/1421001934428442644/image.png?ex=68d772ae&is=68d6212e&hm=ffe70df83dfa791e5205bf993b0771d59f0efa900e966dabe0f0b37675a1a555&=&format=webp&quality=lossless&width=1535&height=863",
+    "https://media.discordapp.net/attachments/1299782233866899586/1421001726273519676/image.png?ex=68d7727c&is=68d620fc&hm=2f8e47b002fb7d66215de60eb987f968009875003975c74096f45f04ba66e2fa&=&format=webp&quality=lossless&width=1535&height=863",
+    "https://media.discordapp.net/attachments/1299782233866899586/1421001870276694098/image.png?ex=68d7729e&is=68d6211e&hm=635177b32c8c4c43511402571c2b62724dc7d6a00e6a9b6cc1af993ff1d7a9c0&=&format=webp&quality=lossless&width=1534&height=863"
+  ],
+    desc:`يمكن اضافة ستاش 500 كيلو.`
+  },
+  
+    { 
+    id:4, 
+    title:"Medium Warehouse", 
+    price:"$280,000",
+    size:"متوسط",
+    stash:"2000kg",
+    canAddGarage:"no",
+    secretRoom:"yes",
+    category:"warehouse",
+    badge:"new", 
+    badgeClass:"new",
+    images:[
+    "https://media.discordapp.net/attachments/1299782233866899586/1421042091227615262/image.png?ex=68d79814&is=68d64694&hm=56a6bee7b56dd32ef33ce56de89f912e7dc699fd58835ce3aa4afa6fc5184822&=&format=webp&quality=lossless&width=1535&height=863",
+    "https://media.discordapp.net/attachments/1299782233866899586/1421042126317158440/image.png?ex=68d7981c&is=68d6469c&hm=cdc399d09d22aa9590d45513f2d19bf67a6d40c6ce6a86cb6a49fd9e55773de2&=&format=webp&quality=lossless&width=1535&height=863",
+    "https://media.discordapp.net/attachments/1299782233866899586/1421042279363252284/image.png?ex=68d79841&is=68d646c1&hm=5903eb34540df4a56c283dfeae6365701299d01f23860ccdadfb041d5dcfe809&=&format=webp&quality=lossless&width=1531&height=790",
+    "https://media.discordapp.net/attachments/1299782233866899586/1421042279958974486/image.png?ex=68d79841&is=68d646c1&hm=1c7c1c4a9558f3d8f00149fdf415019f8638ebff911f77ef3035d1591886c20d&=&format=webp&quality=lossless&width=1531&height=798"
+  ],
+    desc:`يمكن ضافة ستاش 1000 كيلو.`
+	}
+];
+
+const grid=document.getElementById('grid');
+const listSection=document.getElementById('listSection');
+const openListBtn=document.getElementById('openListBtn');
+const modalBg=document.getElementById('modalBg');
+const modalTitle=document.getElementById('modalTitle');
+const modalPrice=document.getElementById('modalPrice');
+const modalLocation=document.getElementById('modalLocation');
+const modalSpecs=document.getElementById('modalSpecs');
+const modalDesc=document.getElementById('modalDesc');
+const modalMainImg=document.getElementById('modalMainImg');
+const counter=document.getElementById('counter');
+const closeModalBtn=document.getElementById('closeModalBtn');
+
+function filterCategory(cat, btn){
+  document.querySelectorAll('.pager button').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  grid.innerHTML='';
+  const items=properties.filter(p=>p.category===cat);
+  items.forEach(p=>{
+    const d=document.createElement('div');
+    d.className='card';
+    d.innerHTML=`
+      <span class="badge ${p.badgeClass||''}">${p.badge||''}</span>
+      <img class="thumb" src="${p.images[0]}" alt="${p.title}">
+      <div class="info">
+        <div class="title">${p.title}</div>
+        <div class="price">${p.price}</div>
+        <div class="meta">Size: ${p.size} • Stash: ${p.stash} • Can Add Garage: ${p.canAddGarage}</div>
+      </div>`;
+    d.onclick=()=>openModal(p);
+    grid.appendChild(d);
+  });
+}
+
+let currentProperty=null;let currentIndex=0;
+function openModal(p){
+  currentProperty=p;currentIndex=0;
+  updateSlider();
+  modalTitle.textContent=p.title;
+  modalPrice.textContent=p.price;
+  modalLocation.textContent = "Size: " + p.size;
+modalSpecs.innerHTML = `
+  <ul>
+    <li>Stash: ${p.stash}</li>
+    <li>Can Add Garage: ${p.canAddGarage}</li>
+    <li>Secret Room: ${p.secretRoom}</li>
+  </ul>
+`;
+  modalDesc.textContent=p.desc;
+  modalBg.style.display='flex';
+}
+function updateSlider(){
+  if(currentProperty){
+    modalMainImg.src=currentProperty.images[currentIndex];
+    counter.textContent=`${currentIndex+1} / ${currentProperty.images.length}`;
+  }
+}
+document.getElementById('nextBtn').addEventListener('click',()=>{
+  if(currentProperty){
+    currentIndex=(currentIndex+1)%currentProperty.images.length;
+    updateSlider();
+  }
+});
+document.getElementById('prevBtn').addEventListener('click',()=>{
+  if(currentProperty){
+    currentIndex=(currentIndex-1+currentProperty.images.length)%currentProperty.images.length;
+    updateSlider();
+  }
+});
+
+function closeModal(){modalBg.style.display='none';}
+closeModalBtn.addEventListener('click',closeModal);
+modalBg.addEventListener('click',e=>{if(e.target===modalBg)closeModal();});
+
+openListBtn.addEventListener('click',()=>{
+  listSection.style.display='block';
+  filterCategory('house');
+});
+</script>
+</body>
+</html>
